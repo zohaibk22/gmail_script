@@ -9,6 +9,7 @@ from pydantic import BaseModel, Field
 from typing_extensions import TypedDict
 from agents.email_reader import fetch_today_emails
 from agents.email_classifier import classify_email
+from agents.extractor_agent import extract_email_content
 
 
 
@@ -24,6 +25,16 @@ def main():
         print(f"✅ Is Job Application? {result['is_job_application']}")
         print(f"💡 Reason: {result['reason']}")
 
+
+        if not result["is_job_application"]:
+            print("❌ Not a job application email, skipping extraction.")
+            continue
+
+        info = extract_email_content(email)
+        print(f"🏢 Company: {info['company']}")
+        print(info, "-----info-----")
+    
+       
 
 
 if __name__ == "__main__":
