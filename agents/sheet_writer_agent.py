@@ -17,6 +17,12 @@ def init_sheet_client():
     client = gspread.authorize(credentials)
     return client
 
+def is_duplicate(message_id: str, sheet) -> bool:
+
+    id_col = sheet.col_values(4)
+    print(id_col, "-----ID COL-----")
+    return message_id in id_col
+
 
 def write_to_sheet(email_data: dict) -> None:
     """
@@ -37,12 +43,17 @@ def write_to_sheet(email_data: dict) -> None:
     client = init_sheet_client()
     sheet = client.open_by_key(SHEET_ID).worksheet(SHEET_NAME)
 
-    date_str = email_data.get('submission_date') or datetime.now().date().isoformat()
-    row = [
+    email_id: str = email_data.get('email_id', '')
+    if is_duplicate(email_id, sheet):
+        print(f"Email with ID {email_id} already exists in the sheet. Skipping write.")
+        return
+
+    date_str: str = email_data.get('submission_date') or datetime.now().date().isoformat()
+    row: list = [
         date_str,
         email_data.get('company', ''),
         email_data.get('job_title', ''),
-        email_data.get('email_id', '')  # Include email ID if needed
+        email_id  # Include email ID if needed
     ]
 
     print(f"--------------📄 Writing to Google Sheet: {row} -------------")
