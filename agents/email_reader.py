@@ -24,7 +24,7 @@ def fetch_today_emails(max_results=10):
         msg_data = service.users().messages().get(userId='me', id=msg['id'], format='full').execute()
 
         # print(msg_data, "-----msg_data-----")
-        print("Email labels:", msg_data.get("labelIds"))
+        print("Email ID:", msg_data.get("id"))
         headers = msg_data['payload']['headers']
 
         subject = next((h['value'] for h in headers if h['name'] == 'Subject'), '')
@@ -49,7 +49,8 @@ def fetch_today_emails(max_results=10):
             'subject': subject,
             'sender': sender,
             'date': date,
-            'body': body
+            'body': body,
+            'id': msg_data.get("id")  # Include email ID if needed
         })
 
     return emails

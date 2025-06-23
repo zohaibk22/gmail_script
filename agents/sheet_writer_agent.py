@@ -18,7 +18,7 @@ def init_sheet_client():
     return client
 
 
-def write_to_sheet(email_data: dict):
+def write_to_sheet(email_data: dict) -> None:
     """
     Writes email data to a Google Sheet.
 
@@ -33,6 +33,7 @@ def write_to_sheet(email_data: dict):
         - Prepares a row with the date, company, and job title.
         - Appends the row to the sheet using 'USER_ENTERED' value input option.
     """
+    print("IN EXTRACT EMAIL CONTENT 🚀")
     client = init_sheet_client()
     sheet = client.open_by_key(SHEET_ID).worksheet(SHEET_NAME)
 
@@ -41,6 +42,7 @@ def write_to_sheet(email_data: dict):
         date_str,
         email_data.get('company', ''),
         email_data.get('job_title', ''),
+        email_data.get('email_id', '')  # Include email ID if needed
     ]
 
     print(f"--------------📄 Writing to Google Sheet: {row} -------------")

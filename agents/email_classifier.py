@@ -8,6 +8,7 @@ load_dotenv()
 llm = ChatOpenAI(model="gpt-4o", temperature=0.0)
 
 def classify_email(email:dict) -> dict:
+    print("IN CLASSIFY EMAIL CONTENT 🚀")
     subject = email.get("subject", "")
     body = email.get("body", "")[:1000]
 
@@ -22,12 +23,9 @@ def classify_email(email:dict) -> dict:
     response = llm.invoke([system_msg, user_msg])
     print(f"Response: {response.content}")
     try:
-        print("DID YOU GET HERE?")
         result = json.loads(response.content)
-        print(f"RESULT: {result}")
-        print("DID YOU GET HERE?")
+      
     except Exception as e:
-        print(e, "IN EXCEPT")
         result = {"is_job_application": False, "reason": "Could not parse response"}
 
 

@@ -7,6 +7,7 @@ llm = ChatOpenAI(model="gpt-4o", temperature=0.0)
 
 
 def extract_email_content(email: dict) -> dict:
+    print("IN EXTRACT EMAIL CONTENT 🚀")
     subject = email.get('subject', '')
     body = email.get('body', '')[:1500]  # Limit to first 1500 characters
     date = email.get('date', '')
